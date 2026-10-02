@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>매뜨 땅먹 — 수학 땅따먹기</title>
+<meta name="description" content="수학 문제를 풀어 우리 학교 땅을 넓히는 초등학생 수학 땅따먹기 게임. 무료, 광고 없음.">
+<meta property="og:title" content="매뜨 땅먹 — 수학 땅따먹기">
+<meta property="og:description" content="수학 문제를 풀고 우리 학교 땅을 넓혀요! 학년에 꼭 맞는 문제로 즐기는 초등 수학 게임">
+<meta property="og:image" content="https://math-land-eater.github.io/img/og.png">
+<meta property="og:url" content="https://math-land-eater.github.io/">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#2a7fc6">
+<link rel="icon" type="image/png" href="img/icon-192.png">
+<link rel="apple-touch-icon" href="img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap">
+<style>
+  :root { --ink: #23303b; --muted: #5d6b78; --primary: #ff7a1a; --primary-dark: #e0620a; --sky: #4fb0ea; --deep: #2a7fc6; --yellow: #ffd23f; --bg: #f3f9ff; --card: #fff; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 "Jua", system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  img { max-width: 100%; height: auto; display: block; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+  /* 위쪽 줄 */
+  .top { position: sticky; top: 0; z-index: 10; background: rgba(42, 127, 198, .92); backdrop-filter: blur(8px); color: #fff; }
+  .top .wrap { display: flex; align-items: center; gap: 12px; height: 58px; }
+  .brand { display: flex; align-items: center; gap: 8px; font-size: 22px; text-decoration: none; margin-right: auto; }
+  .brand img { width: 34px; height: 34px; border-radius: 9px; }
+  .nav a { text-decoration: none; opacity: .9; margin-left: 14px; }
+  .nav a:hover { opacity: 1; text-decoration: underline; }
+
+  /* 버튼 */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 18px; text-decoration: none; color: #fff;
+    background: linear-gradient(180deg, #ff9a3d, var(--primary)); box-shadow: 0 5px 0 var(--primary-dark), 0 10px 24px rgba(224, 98, 10, .35); transition: transform .1s; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--primary-dark); }
+  .btn.small { padding: 6px 14px; font-size: 16px; box-shadow: 0 3px 0 var(--primary-dark); border-radius: 12px; }
+  .btn.big { padding: 16px 34px; font-size: 26px; }
+
+  /* 첫 화면 */
+  .hero { background: radial-gradient(ellipse 120% 90% at 50% 0%, #8fd8ff 0%, var(--sky) 45%, var(--deep) 100%); color: #fff; overflow: hidden; }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 28px; padding-top: 48px; padding-bottom: 64px; }
+  .hero h1 { margin: 0; font-size: clamp(54px, 11vw, 92px); line-height: 1.05; font-weight: 400; text-shadow: 0 5px 0 #1d5f99; letter-spacing: -1px; }
+  .hero h1 .y { color: var(--yellow); }
+  .hero .lead { font-size: clamp(21px, 3.6vw, 28px); margin: 14px 0 26px; }
+  .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 22px 0 0; }
+  .chips li { background: rgba(255, 255, 255, .2); border: 1px solid rgba(255, 255, 255, .45); border-radius: 999px; padding: 3px 14px; font-size: 16px; }
+  .hero-map { width: 100%; max-width: 420px; justify-self: center; border-radius: 32px; box-shadow: 0 20px 50px rgba(10, 50, 100, .4); animation: float 5s ease-in-out infinite; }
+  @keyframes float { 50% { transform: translateY(-10px); } }
+  @media (prefers-reduced-motion: reduce) { .hero-map { animation: none; } }
+
+  /* 칸 */
+  section.block { padding: 56px 0; }
+  section.block:nth-of-type(even) { background: #fff; }
+  h2 { font-size: clamp(30px, 5vw, 40px); font-weight: 400; text-align: center; margin: 0 0 8px; }
+  .sub { text-align: center; color: var(--muted); margin: 0 0 30px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card { background: var(--card); border-radius: 22px; padding: 22px; box-shadow: 0 6px 20px rgba(30, 80, 130, .1); border: 1px solid #e3eef8; }
+  section.block:nth-of-type(even) .card { background: var(--bg); box-shadow: none; }
+  .card .ic { font-size: 38px; line-height: 1; }
+  .card h3 { font-size: 22px; font-weight: 400; margin: 10px 0 4px; }
+  .card p { margin: 0; color: var(--muted); font-size: 16px; }
+
+  .steps { counter-reset: s; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; list-style: none; padding: 0; margin: 0; }
+  .steps li { counter-increment: s; position: relative; padding: 52px 20px 22px; background: #fff; border-radius: 22px; border: 1px solid #e3eef8; text-align: center; }
+  .steps li::before { content: counter(s); position: absolute; top: 14px; left: 50%; transform: translateX(-50%); width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: #fff; display: grid; place-items: center; font-size: 19px; }
+  .steps b { display: block; font-size: 21px; font-weight: 400; margin-bottom: 4px; }
+  .steps span { color: var(--muted); font-size: 16px; }
+
+  .shots { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 6px 4px 18px; justify-content: center; }
+  .shots figure { margin: 0; flex: 0 0 auto; width: min(230px, 62vw); scroll-snap-align: center; text-align: center; }
+  .shots img { border-radius: 26px; border: 6px solid #23303b; box-shadow: 0 12px 28px rgba(30, 60, 100, .25); aspect-ratio: 9 / 16; width: 100%; height: auto; }
+  .shots figcaption { margin-top: 10px; color: var(--muted); }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .two .card h3 { margin-top: 0; }
+  .two ol { margin: 8px 0 0; padding-left: 22px; color: var(--muted); font-size: 16px; }
+
+  details { background: #fff; border: 1px solid #e3eef8; border-radius: 16px; padding: 14px 18px; margin: 0 auto 10px; max-width: 760px; }
+  section.block:nth-of-type(even) details { background: var(--bg); }
+  summary { cursor: pointer; font-size: 19px; }
+  details p { margin: 8px 0 0; color: var(--muted); font-size: 16px; }
+
+  .cta { text-align: center; background: linear-gradient(180deg, var(--sky), var(--deep)) !important; color: #fff; }
+  .cta h2 { margin-bottom: 22px; }
+
+  footer { background: #1d3447; color: #b9c7d4; font-size: 15px; padding: 26px 0 calc(26px + env(safe-area-inset-bottom)); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: space-between; }
+  footer a { color: #fff; }
+
+  @media (max-width: 760px) {
+    .nav { display: none; }
+    .hero .wrap { grid-template-columns: 1fr; text-align: center; padding-top: 32px; padding-bottom: 48px; }
+    .chips { justify-content: center; }
+    .hero-map { max-width: 300px; grid-row: 1; }
+    .grid, .steps, .two { grid-template-columns: 1fr; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .card { padding: 16px; }
+    .card h3 { font-size: 19px; }
+    .card p { font-size: 15px; }
+    .shots { justify-content: flex-start; }
+  }
+  @media (max-width: 400px) { .grid { grid-template-columns: 1fr; } .btn.big { font-size: 22px; padding: 14px 26px; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="img/icon-192.png" alt="">매뜨 땅먹</a>
+    <nav class="nav"><a href="#about">게임 소개</a><a href="#shots">게임 화면</a><a href="#faq">자주 묻는 질문</a></nav>
+    <a class="btn small" href="play/">게임하기</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>매뜨 <span class="y">땅먹</span></h1>
+      <p class="lead">수학 문제를 풀고<br>우리 학교 땅을 넓혀요!</p>
+      <a class="btn big" href="play/">▶ 지금 게임하기</a>
+      <ul class="chips"><li>💸 무료</li><li>🚫 광고 없음</li><li>📱 폰·컴퓨터 모두</li><li>🧒 초등 1~6학년</li></ul>
+    </div>
+    <img class="hero-map" src="img/map.webp" width="800" height="800" alt="학교마다 알록달록한 색으로 나뉜 한반도 지도">
+  </div>
+</section>
+
+<section class="block" id="about">
+  <div class="wrap">
+    <h2>이런 게임이에요</h2>
+    <p class="sub">진짜 한반도 지도 위에서 펼쳐지는 초등학교 땅따먹기</p>
+    <div class="grid">
+      <div class="card"><div class="ic">🧮</div><h3>내 학년에 꼭 맞는 문제</h3><p>출생연도로 학년이 정해지고, 학년·학기에 맞는 덧셈부터 분수·소수·도형까지 나와요.</p></div>
+      <div class="card"><div class="ic">🗺️</div><h3>진짜 한반도 지도</h3><p>전국 초등학교 6,300여 곳이 실제 위치에 있고, 땅은 160만 칸이 넘어요.</p></div>
+      <div class="card"><div class="ic">⚔️</div><h3>땅 뺏기와 지키기</h3><p>닿은 땅은 문제 2개로 차지! 4학년부터는 멀리 있는 땅도 문제 50개로 뺏어요.</p></div>
+      <div class="card"><div class="ic">💡</div><h3>힌트와 오답 노트</h3><p>모르는 문제는 힌트를 보고, 틀린 문제는 오답 노트에 모아 다시 풀어요.</p></div>
+      <div class="card"><div class="ic">🏆</div><h3>랭킹표와 배지</h3><p>학교·학생·시도 순위와 연속 정답 불꽃, 출석 배지로 실력을 뽐내요.</p></div>
+      <div class="card"><div class="ic">🛡️</div><h3>안심하고 즐겨요</h3><p>광고가 없고, 채팅은 정해진 문장만 쓸 수 있어요.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="how">
+  <div class="wrap">
+    <h2>이렇게 해요</h2>
+    <p class="sub">1분이면 시작할 수 있어요</p>
+    <ol class="steps">
+      <li><b>회원가입</b><span>아이디·비밀번호를 만들고 출생연도를 골라요</span></li>
+      <li><b>우리 학교 고르기</b><span>학교를 찾아 고르고 닉네임을 정해요</span></li>
+      <li><b>땅 넓히기</b><span>지도에서 땅을 눌러 문제를 풀고 차지해요</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="block" id="shots">
+  <div class="wrap">
+    <h2>게임 화면</h2>
+    <p class="sub">옆으로 넘겨 보세요</p>
+    <div class="shots">
+      <figure><img src="img/screen-1.webp" width="540" height="960" loading="lazy" alt="시작 화면"><figcaption>시작 화면</figcaption></figure>
+      <figure><img src="img/screen-2.webp" width="540" height="960" loading="lazy" alt="학교마다 색이 다른 땅 지도"><figcaption>우리 학교 땅</figcaption></figure>
+      <figure><img src="img/screen-3.webp" width="540" height="960" loading="lazy" alt="수학 문제를 푸는 화면"><figcaption>문제 풀고 땅 뺏기</figcaption></figure>
+      <figure><img src="img/screen-4.webp" width="540" height="960" loading="lazy" alt="학교 랭킹표"><figcaption>랭킹표</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="app">
+  <div class="wrap">
+    <h2>앱처럼 쓰기</h2>
+    <p class="sub">홈 화면에 추가하면 아이콘을 눌러 바로 시작해요</p>
+    <div class="two">
+      <div class="card"><h3>🤖 안드로이드 (크롬)</h3><ol><li><a href="play/">게임</a>을 열어요</li><li>오른쪽 위 <b>⋮</b> 메뉴를 눌러요</li><li><b>홈 화면에 추가</b> 또는 <b>앱 설치</b>를 눌러요</li></ol></div>
+      <div class="card"><h3>🍎 아이폰 (사파리)</h3><ol><li><a href="play/">게임</a>을 열어요</li><li>아래쪽 <b>공유</b> 버튼을 눌러요</li><li><b>홈 화면에 추가</b>를 눌러요</li></ol></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="faq">
+  <div class="wrap">
+    <h2>자주 묻는 질문</h2>
+    <p class="sub">궁금한 점을 눌러 보세요</p>
+    <details><summary>돈이 드나요?</summary><p>아니요. 모두 무료이고 광고도 없어요.</p></details>
+    <details><summary>몇 학년이 할 수 있나요?</summary><p>초등학교 1학년부터 6학년까지 할 수 있어요. 출생연도로 학년이 정해지고, 그 학년에 맞는 문제가 나와요.</p></details>
+    <details><summary>기록은 어디에 저장되나요?</summary><p>지금 쓰는 기기(브라우저) 안에만 저장돼요. 서버로 보내지 않아서, 다른 기기에서는 처음부터 시작해요. 브라우저 기록을 지우면 게임 기록도 지워져요.</p></details>
+    <details><summary>친구와 같이 할 수 있나요?</summary><p>이 사이트에서는 한 기기에서 혼자 하는 방식이에요. 같은 기기에서 친구가 따로 가입해서 우리 학교 땅을 함께 넓힐 수 있어요.</p></details>
+    <details><summary>처음 열 때 왜 오래 걸리나요?</summary><p>160만 칸이 넘는 진짜 지도를 받기 때문이에요. 한 번 받으면 기기에 저장돼서 다음부터는 빨리 열리고, 인터넷이 끊겨도 열려요.</p></details>
+  </div>
+</section>
+
+<section class="block cta">
+  <div class="wrap">
+    <h2>우리 학교를 1등으로!</h2>
+    <a class="btn big" href="play/">▶ 지금 게임하기</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 매뜨 땅먹</span>
+    <span><a href="privacy.html">개인정보처리방침</a></span>
+  </div>
+</footer>
+</body>
+</html>
